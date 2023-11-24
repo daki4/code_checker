@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>How should we run the code provided by the user</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="how-should-we-run-the-code-provided-by-the-user">How should we run the code provided by the user</h1>
+<h2 id="why-not-build-it-yourself">Why not build it yourself?</h2>
+<p>It is good to keep a balance between using homebrew tools and externally developed
+tools. Whenever possible, in most contexts it's a good idea use an external
+library for complex parts of the system that we might not want to reinvent.
+See: <a href="https://en.wikipedia.org/wiki/Not_invented_here">Not Invented Here</a>
+Considering that this project is supposed to take no-more than 1-2 days per week,
+it is not feasible to homebrew a solution for running code securely, So here are
+some of the criteria I have laid out for a library to cover.</p>
+<h2 id="choose-an-external-library">Choose an external library</h2>
+<p>There is a need for a library that can do the following:</p>
+<ul>
+<li>have a web API (for scalability reasons)</li>
+<li>can run the following languages:
+<ul>
+<li>Rust</li>
+<li>C#</li>
+<li>Python</li>
+<li>JavaScript</li>
+<li>C/C++</li>
+</ul>
+</li>
+<li>can easily modify the installed language version</li>
+<li>can easily add/remove different languages</li>
+<li>can spin up a clean environment in which to run the user submitted code</li>
+<li>the library doesnt allow execution leaks (jailbreaks), namely one run to affect
+another's outut</li>
+<li>the library has security measures implemented</li>
+<li>implementation should be hostable on-premises</li>
+</ul>
+<h2 id="why-piston">Why Piston?</h2>
+<ol>
+<li>
+<p><strong>Clean Language Runtime Environment</strong>: Automatic Configuration: Piston excels
+in automatically configuring a clean language runtime environment. It provides a
+clean OS image or can be provisioned with just enough data for the desired
+execution, ensuring a consistent and isolated environment.</p>
+</li>
+<li>
+<p><strong>Flexibility in Handling Input</strong>:</p>
+<ul>
+<li>
+<p><strong>Multiple File Support</strong>: Piston stands out by easily accepting multiple
+files for execution, streamlining the process for scenarios involving complex
+exercises input scenarios and structure bundles.</p>
+</li>
+<li>
+<p><strong>Stdin Support</strong>: The ability to accept stdin as input enhances user
+flexibility, allowing for dynamic and interactive program execution.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Languages support</strong>: The library provides a tool to assist the
+administrator with:</p>
+<ul>
+<li>Adding new languages</li>
+<li>Removing specific languages/versions</li>
+<li>Changing language versions</li>
+</ul>
+<p>The library also supports all of the abovementioned languages without any
+problems, and if administrators want to add a future version for
+experimentation, they can do so quite easily.</p>
+</li>
+<li>
+<p><strong>Scalability</strong>: Piston works just off of simple HTTP requests and can easily
+be made to work with low and high loads spinning up and down instances as
+demand fluctuates.</p>
+</li>
+<li>
+<p><strong>Built-in Security</strong>:</p>
+<ul>
+<li>
+<p><strong>Automatic Timeouts</strong>: Piston incorporates automatic timeouts to weed out
+slow-running code or infinite loops, enhancing security and resource management.</p>
+</li>
+<li>
+<p><strong>Memory Limits</strong>: Piston enforces memory limits, protecting against
+excessive resource consumption.</p>
+</li>
+<li>
+<p><strong>Process Count Cap</strong>: Piston includes a process count cap to control the
+number of concurrent executions, preventing system overload.</p>
+</li>
+<li>
+<p><strong>IO Limits</strong>: IO limits are in place to regulate input/output operations,
+ensuring controlled access to system resources.</p>
+</li>
+<li>
+<p><strong>Host OS Protection</strong>: Piston has security measures preventing the
+execution of commands that could harm the host OS.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><span style="color:red"><strong>Drawbacks</strong></span>:</p>
+<ul>
+<li><strong>No builtin way of calculating resource usage</strong>: Compared to a solution like
+Domjudge or OpenJudgeSystem, there is no builtin section of the API to tell
+you how long it took to execute your code. There are however API properties
+to limit the runtime length and execution duration as outlined above. This is
+not going to be hard to include, it will just require modifying the piston library.</li>
+</ul>
+<h2 id="why-not-judge0">Why not Judge0?</h2>
+<p>Judge0 is interesting due to its extensive configuration options, and scalability,
+and commercial support.</p>
+<ul>
+<li><span style="color:red"><strong>Drawbacks</strong></span>:
+<ul>
+<li><strong>Configurability</strong>: Judge0 includes features like
+batching submissions, authentication, and run history that are better suited for
+implementation at the backend level rather than within the execution engine.</li>
+<li><strong>Bloat</strong>: Judge0 does not
+<a href="https://github.com/judge0/judge0/issues/212">offer customization of the installed languages</a>,
+meaning you will waste a lot of space per judge0 instance.</li>
+<li><strong>Customisation</strong> : Judge0 offers no ways for an administrator to easily
+change the version of the installed language. That is not a trivial task
+for a regular system administrator, and requires knowledge of the Judge0
+codebase, which even though is open-source, should be customised using
+recipes like Piston does.</li>
+</ul>
+</li>
+<li><strong>No builtin way of calculating resource usage</strong>: Compared to a solution like
+Domjudge or OpenJudgeSystem, there is no builtin section of the API to tell
+you how long it took to execute your code. There are however API properties
+to limit the runtime length and execution duration as outlined above. This is
+not going to be hard to include, it will just require modifying the piston library.</li>
+</ul>
+<h2 id="gutting-another-solutions-code-running-internals">Gutting another solution's code running internals?</h2>
+<p>Implementations that usually are included in a competing solution are not
+entirely straightforward to understand and port. This also does not consider the
+technical debt that will be incurred by including a component that is
+purpose-built for a different platform, ableit with similar requirements, the
+maintenance side will be costly.</p>
+<ol>
+<li>
+<p><strong>Open Judge System</strong></p>
+<ul>
+<li>
+<p><strong>Dependency on Windows Server</strong>: The OpenJudgeSystem introduces a notable
+dependency on Windows Server, which may pose challenges for users seeking
+cross-platform compatibility. This reliance on a specific operating system can
+limit deployment flexibility and may not align with the preferences or
+infrastructure of all users.</p>
+</li>
+<li>
+<p><strong>Configuration Challenges</strong>: Configuring the Open Judge System is a
+cumbersome process. The dependency on Windows Server adds complexity to the
+setup, also adding proprietary software as a dependency, and the fact that
+the backend for this system is not designed to be scalable beyond a running
+instance make it not suitable for extraction and use just by itself.</p>
+</li>
+<li>
+<p><strong>Internal Libraries</strong>: Most implementations, such as Open Judge System and
+DOMJudge, have internal libraries that are not easily modifiable or extractable.
+They are tightly integrated into the overall stack and lack standalone usability.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>DOMJudge</strong></p>
+</li>
+</ol>
+<ul>
+<li>
+<p><strong>Manual configuration</strong>: DOMJudge requires the user to manually configure a lot
+of the infrastructure around the running part of the code, allowing you to use
+your own compilers, interpreters, and change versions of the languages as you
+wish. Problem with this is the user needs to be profficient with the OS and be
+careful when configuring the runners, as it is quite easy to allow an execution
+leak and spoil the results. This is also intertwined with the system, telling
+it what compiler is available, and is not easy to port over to an API if it was
+not engineered to be taken out from the beginning.</p>
+</li>
+<li>
+<p><strong>Mix of programming languages</strong>: As DOMJudge is written in PHP and C, the code
+running component is also written in both languages, making it a maintenance
+nightmare for this project.</p>
+</li>
+<li>
+<p><span style="color:green"><strong>Accurate runtime results</strong></span>: DOMJudge
+provides the user with accurate resource usage information after every
+submission.</p>
+</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>From the given options, none of them are perfect, and the closest one to the
+requirements given above is Piston. The fact there is no used resource
+information is not great, but is easy to get implemented.</p>
+<p>While Judge0 offers more features than Piston (that are actually meant to be
+implemented on the backend rather than the code-execution side), it doesn't make
+sense as it comes with a lot of baggage around language configuration (choice),
+and it also suffers a similar issue around used resource information.</p>
+<p>And looking at some of the existing &quot;competing&quot; solutions for running
+competitions, gutting one and using its execution library doesnt make sense as it
+will be a maintenance nightmare around either the dependence on an operating
+system, security, or language choices.</p>
+<h2 id="references">References</h2>
+<p>Engineer-man/piston: A high performance general purpose code execution engine.
+(2021, January 4). GitHub. Retrieved November 10, 2023, from <a href="https://github.com/engineer-man/piston">https://github.com/engineer-man/piston</a></p>
+<p>Hackerrank interview/competition platform. (n.d.). HackerRank. <a href="https://www.hackerrank.com/">https://www.hackerrank.com/</a></p>
+<p>How I built the internet's best performing code execution engine [Video]. (n.d.).
+YouTube. <a href="https://www.youtube.com/watch?v=SD4KgwdjmdI">https://www.youtube.com/watch?v=SD4KgwdjmdI</a></p>
+<p>Robust, scalable, and open-source online code execution system that can be used to
+build a wide range of applications that need online code execution features.
+(2017). Judge0. <a href="https://judge0.com/">https://judge0.com/</a></p>
+<p>SaaS platform offering job-focused courses on algorithms in different languages.
+(n.d.). <a href="https://www.codechef.com/">https://www.codechef.com/</a></p>
+
+        
+        
+    </body>
+    </html>

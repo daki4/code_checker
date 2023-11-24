@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>&ast;&ast;Code Runner software system - Project plan&period;&ast;&ast;</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="code-runner-software-system---project-plan"><strong>Code Runner software system - Project plan.</strong></h1>
+<p>Author: Yordan Mitev</p>
+<p>Stakeholder: Yordan Mitev</p>
+<h2 id="problem-statement"><strong>Problem Statement</strong></h2>
+<p>Currently, there is a lack of a unified solution for automated code execution and
+grading. There are environments for running code, but there are no plug-and-play
+versions of a tool of this variety. As a student it is awkward to see an
+institution's classes that teach (basic) algorithms and language basics to not
+have an established process for verifying solutions and if your code doesn't
+function properly, reach out to a teacher, and have a review consultation/
+meeting. For example, when teaching SQL, there is a system to run and verify
+queries, but it is very janky and not very well documented</p>
+<h3 id="why-you-shouldnt-use-a-saas-platform">Why you shouldn't use a SaaS platform?</h3>
+<p>When we talk about a SaaS platform like HackerRank and Codechef, we accept the
+premise that we need to leave our sovereign space where we control who is
+registered and has access to our resources.
+<a href="https://dataswamp.org/~solene/2021-07-23-why-selfhosting-is-important.html">Why selfhosting is important in this day and age.</a></p>
+<ul>
+<li><span style="color:red"><strong>Drawbacks</strong></span>:
+<ul>
+<li><strong>Proprietary Solutions</strong>: SaaS platforms often use proprietary solutions
+that are not publicly accessible. This limits the ability to customize
+orintegrate these solutions into external systems.</li>
+<li><strong>Full-scale services</strong>: As it stands, these SaaS platforms also base their
+business model on the fact that they provide a predefined set of exercises,
+ranked by difficulty and are fundamentally incompatible with a self-hosted
+platform as the goal is.</li>
+</ul>
+</li>
+</ul>
+<h2 id="research"><strong>Research</strong></h2>
+<h3 id="code-running-in-depth"><a href="code-running.html">Code running in depth</a></h3>
+<h3 id="tldr">TLDR</h3>
+<p>Currently, there exist commercial options like hackerrank, and codewars, but they
+are not on-premise, are closed-source, and allow not so much customisation. They
+are good if you have a deep budget and primarily focus on interviews and want
+access to a lot of predefined challenges.</p>
+<p>There is a platform called Open Judge System which has been maintained by a
+Bulgarian company, but has not received any features/updates/new languages for
+over 8 years. It is written in .NET Framework C#, and looks interesting, but its
+execution engine is really hard to maintain, OS-dependent and hard to configure/
+scale.</p>
+<p>There is an open-source code execution engine called &quot;Piston&quot; that allows
+on-premises hosting and code execution over an HTTP api. It has support for a
+wide variety of languages, and it is very simple to change to a specific language
+version, or support a new language. There seems to exist support for SQL, but is
+rather minimal.</p>
+<p>There is another tool called Judge0 that offers both on-premises hosting and
+paid-for hosting, but it includes a lot of features that are not needed for a
+project of this caliber including:</p>
+<ul>
+<li>Batched code execution</li>
+<li>Authentication</li>
+<li>Run history</li>
+</ul>
+<p>To add to that, OpenJudgeSystem and Judge0 are both GPL-3 licensed software,
+which will conflict with a MIT-Licensed version.</p>
+<h2 id="technology"><strong>Technology</strong></h2>
+<p>The project will be developed in Rust (programming language), because I want to
+further my understanding of the language. Though there are more fitting options,
+I want to explore more about the language and its features.</p>
+<p>When it comes to making UIs, there are several interesting approaches that should
+be considered:</p>
+<ul>
+<li>
+<p>Server-side-rendered templates:</p>
+<ul>
+<li>Jinja</li>
+<li>Handlebars</li>
+</ul>
+</li>
+<li>
+<p>Javascript frameworks:</p>
+<ul>
+<li>Svelte</li>
+<li>SolidJS</li>
+</ul>
+</li>
+</ul>
+<h2 id="deliverables"><strong>Deliverables</strong></h2>
+<p>Application hosted on a server + API</p>
+<p>Demo-able tool for running receiving code</p>
+<p>Integration path of the API (canvaslms extension or fontys oauth)</p>
+<p>Modified Piston runtime.</p>
+<h2 id="timeline"><strong>Timeline</strong></h2>
+<h3 id="sprint-1-until-13th-oct-2023"><strong>Sprint 1: (until: 13th Oct 2023)</strong></h3>
+<ul>
+<li>Technology picks</li>
+<li>Hosting location (VPS, self-hosted?)</li>
+<li>Repository setup</li>
+</ul>
+<h3 id="sprint-2-until-3rd-nov-2023"><strong>Sprint 2: (until: 3rd Nov 2023)</strong></h3>
+<ul>
+<li>Basic data types definition and functionality (Users, Problem, Problem
+collections, Solutions, etc.)</li>
+<li>Basic authentication (username-password based)</li>
+<li>Basic database configuration</li>
+</ul>
+<h3 id="sprint-3-until-24th-nov-2023"><strong>Sprint 3: (until: 24th Nov 2023)</strong></h3>
+<ul>
+<li>Connect the execution engine to the application</li>
+<li>Consider advanced authentication options (canvaslms/fontys oauth)</li>
+</ul>
+<h3 id="sprint-4-until-22nd-dec-2023"><strong>Sprint 4: (until: 22nd Dec 2023)</strong></h3>
+<ul>
+<li>Extend the execution engine to include more build system configurations</li>
+<li>SQL query runner</li>
+<li>Implement one of the integration paths from <strong>Sprint 3</strong></li>
+</ul>
+<h3 id="sprint-5-tbd"><strong>Sprint 5: TBD</strong></h3>
+
+        
+        
+    </body>
+    </html>

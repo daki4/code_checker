@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Architecture</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="architecture">Architecture</h1>
+<h2 id="technology-picks">Technology picks</h2>
+<h3 id="golang">Golang</h3>
+<p>Golang is a highly concurrent and extremely simple language to learn and understand.
+There is no need to learn complicated frameworks and provides everything one
+needs to create a web application backend, there are also a lot of language
+concepts included by default with the language, like the standard library's
+<code>net/http</code> module, and excellent support for modern standards.</p>
+<p>The other thing is, I wanted to learn more about the language, as I already have
+experience with C#, Java, Python, JavaScript when it comes to web development,
+and this feels like a great opportunity.</p>
+<h3 id="svelte">Svelte</h3>
+<ul>
+<li>
+<p>Svelte is the framework that best meets the API of the web. It does it’sbest
+to adhere to standard, and really only builds on what exists, doesn’tinvent
+anything new like JSX.</p>
+</li>
+<li>
+<p>because Svelte follows the web’s lead, learning Svelte is
+super easy. There are no non-standard syntax features, like JSX, and
+inconsistencies in doing things, like:</p>
+<ul>
+<li>React functional components</li>
+<li>React class components</li>
+<li>old class hooks</li>
+<li>functional hooks</li>
+<li>etc.</li>
+</ul>
+</li>
+<li>
+<p>The performance is rock solid—Svelte is often beating out other frameworkson
+UI and JS speed. And it’s increasingly used in production on various
+popular and traction-heavy sites.</p>
+</li>
+<li>
+<p>It’s the “disappearing framework.” This feature is probably Svelte’s greatest
+innovation, and every framework should (and many are trying to) adopt this
+idea. There are zero client-side dependencies. Just the end JS of the
+component itself.</p>
+</li>
+</ul>
+<p><a href="https://medium.com/@arxpoetica/top-5-reasons-you-should-use-svelte-on-your-current-project-right-now-e2f6835e904f">Why use svelte in your current project</a></p>
+<h2 id="code-running">Code running</h2>
+<p>check <a href="code-running.html">code-running.md</a></p>
+<h2 id="business-logic">Business logic</h2>
+<p>The core part of the application revolves around receiving code from a user,
+running it with a specific input, and checking the outcome. If the outcome is
+satisfactory - test passed, otherwise - test failed.</p>
+<p>Now, what is the current workflow:</p>
+<ul>
+<li>The application receives a submission that has the user's code.</li>
+<li>The application fetches all the test cases for the given exercise.</li>
+<li>For every test case, a request is sent to the code execution segment, which
+runs the piece of code, and returns a result to the &quot;backend&quot;.</li>
+<li>When a run is complete, the &quot;backend&quot; checks the &quot;output&quot; of that piece of
+code, and the predefined by that test &quot;output&quot;, and if they match, then the
+test was passed. If there was a runtime error, then the test is automatically
+failed.</li>
+<li>When all tests have been ran, the results are saved in the database, and
+returned to the frontend.</li>
+</ul>
+<img src="file:///d:\programming\uni\semester-3\personal-project\code_checker\archived\diagram.svg" />
+
+        
+        
+    </body>
+    </html>
