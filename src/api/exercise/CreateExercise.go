@@ -48,6 +48,10 @@ func CreateExercise(c echo.Context) error {
 			Version: "3.11",
 		}}
 
+	for idx := range exercise.Tests {
+		exercise.Tests[idx].Id, _ = uuid.NewUUID()
+	}
+
 	db.Create(&exercise)
 
 	return c.JSON(http.StatusCreated, exercise)

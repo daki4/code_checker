@@ -6,13 +6,14 @@ import (
 )
 
 type ControlTest struct {
-	Id             uint64    `json:"id" gorm:"primaryKey; autoIncrement:1"`
+	Id             uuid.UUID `json:"id" gorm:"primaryKey"`
 	ExerciseId     uuid.UUID `json:"exerciseId" gorm:"foreignKey:Id"`
+	Exercise       Exercise  `json:"-" gorm:"references`
 	Input          string    `json:"input"`
-	ExpectedOutput string    `json:"output"`
+	ExpectedOutput string    `json:"expectedOutput"`
 	IsHidden       bool      `json:"isHidden"`
 }
 
-func (t ControlTest) CompareData(piston.SubmissionResponse) bool {
-	return true
+func (t ControlTest) CompareData(submission piston.SubmissionResponse) bool {
+	return t.ExpectedOutput == submission.Output
 }

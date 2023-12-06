@@ -9,14 +9,13 @@ import (
 type Solution struct {
 	Id             uuid.UUID     `json:"id" gorm:"primaryKey"`
 	Exercise       Exercise      `gorm:"foreignKey:Id"`
-	ExerciseId     uuid.UUID     `json:"exerciseId"`
-	User           string        `json:"user"`
+	User           string        `json:"username"`
 	Language       string        `json:"language"`
 	Code           string        `json:"code"`
 	IsHidden       bool          `json:"isHidden"`
 	Score          int           `json:"score"`
 	SubmissionTime time.Time     `json:"submissionTime"`
-	TestResults    []TestOutcome `json:"testResults" gorm:"foreignKey:SolutionId"`
+	TestResults    []TestOutcome `gorm:"foreignKey:SolutionId"`
 }
 
 func (solution *Solution) GenerateScore() {

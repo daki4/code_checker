@@ -24,6 +24,7 @@ func SubmitSolution(c echo.Context) error {
 
 	submission.SubmissionTime = time.Now()
 	submission.Id = uuid.New()
+	submission.Username = c.Get("username").(string)
 	var exercise exerpack.Exercise
 	var exercises []exerpack.Exercise
 	db.Find(&exercises, "id = ?", c.Param("id")).Preload("AllowedLanguages").Preload("Tests").First(&exercise)
@@ -33,7 +34,18 @@ func SubmitSolution(c echo.Context) error {
 	submission.Exercise = exercise
 	db.Omit("Exercise").Create(&submission)
 
-	db.Omit("Exercise").Create(submission.RunTests())
+	solution := submission.RunTests()
+	// testResults := solution.TestResults
 
-	return c.JSON(http.StatusCreated, submission)
+	// solution.TestResults = []exerpack.TestOutcome{}
+
+	db.Omit("Exercise").Omit("ControlTest").Create(&solution)
+
+	// for _, testResult := range testResults {
+	// 	// index is the index where we are
+	// 	// element is the element from someSlice for where we are
+	// 	db.Omit("ControlTest").Create(&testResult)
+	// }
+
+	return c.JSON(http.StatusCreated, solution)
 }

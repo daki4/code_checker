@@ -17,6 +17,7 @@ var pistonConn Piston
 func Start() {
 	// client := gopiston.New("", http.DefaultClient, "http://localhost:2000/api/v2/piston/")
 	pistonConn.Client = gopiston.CreateDefaultClient()
+	pistonConn.Client.BaseURL = "http://localhost:2000/api/v2/"
 	// fmt.Printf("%s", client.GetLanguages())
 	// pistonConn.Client = gopiston.New("", http.DefaultClient, "http://localhost:2000")
 }

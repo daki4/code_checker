@@ -1,16 +1,26 @@
 # How should we run the code provided by the user
 
+## Introduction
+
+When we receive user submissions, we would like to be able to verify that their
+code fulfills the problem's requirements. To do this, we should be able to run
+the user's submitted code, and when running it we should have security precautions
+in place. We dont want the user to be able to submit an infinite loop, or a fork
+bomb and crash the system. We also do not want to be able to submit something
+that allos different submission attempts to interfere with one another, so we
+need to set up and then clean the environment. To do this, we can use an off-the-shelf
+solution to run the code, or we can build it ourselfves.
+
 ## Why not build it yourself?
 
-It is good to keep a balance between using homebrew tools and externally developed
-tools. Whenever possible, in most contexts it's a good idea use an external
+Whenever possible, in most contexts it's a good idea use an external
 library for complex parts of the system that we might not want to reinvent.
 See: [Not Invented Here](https://en.wikipedia.org/wiki/Not_invented_here)
 Considering that this project is supposed to take no-more than 1-2 days per week,
 it is not feasible to homebrew a solution for running code securely, So here are
 some of the criteria I have laid out for a library to cover.
 
-## Choose an external library
+## Criteria for an external library
 
 There is a need for a library that can do the following:
 
@@ -42,7 +52,7 @@ execution, ensuring a consistent and isolated environment.
      exercises input scenarios and structure bundles.
 
    - **Stdin Support**: The ability to accept stdin as input enhances user
-     flexibility, allowing for dynamic and interactive program execution.
+     flexibility, allowing for dynamic program execution.
 
 3. **Languages support**: The library provides a tool to assist the
    administrator with:
@@ -115,40 +125,36 @@ maintenance side will be costly.
 
 1. **Open Judge System**
 
-   - **Dependency on Windows Server**: The OpenJudgeSystem introduces a notable
-     dependency on Windows Server, which may pose challenges for users seeking
-     cross-platform compatibility. This reliance on a specific operating system can
-     limit deployment flexibility and may not align with the preferences or
-     infrastructure of all users.
+     - <span style="color:red">**Dependency on Windows Server**</span>: The OpenJudgeSystem introduces a notable
+       dependency on Windows Server, which may pose challenges for users seeking
+       cross-platform compatibility. This reliance on a specific operating system can
+       limit deployment flexibility and may not align with the preferences or
+       infrastructure of all users.
 
-   - **Configuration Challenges**: Configuring the Open Judge System is a
-     cumbersome process. The dependency on Windows Server adds complexity to the
-     setup, also adding proprietary software as a dependency, and the fact that
-     the backend for this system is not designed to be scalable beyond a running
-     instance make it not suitable for extraction and use just by itself.
-
-   - **Internal Libraries**: Most implementations, such as Open Judge System and
-   DOMJudge, have internal libraries that are not easily modifiable or extractable.
-   They are tightly integrated into the overall stack and lack standalone usability.
+     - **Configuration Challenges**: Configuring the Open Judge System is a
+       cumbersome process. The dependency on Windows Server adds complexity to the
+       setup, also adding proprietary software as a dependency, and the fact that
+       the backend for this system is not designed to be scalable beyond a running
+       instance make it not suitable for extraction and use just by itself.
 
 2. **DOMJudge**
 
-- **Manual configuration**: DOMJudge requires the user to manually configure a lot
-  of the infrastructure around the running part of the code, allowing you to use
-  your own compilers, interpreters, and change versions of the languages as you
-  wish. Problem with this is the user needs to be profficient with the OS and be
-  careful when configuring the runners, as it is quite easy to allow an execution
-  leak and spoil the results. This is also intertwined with the system, telling
-  it what compiler is available, and is not easy to port over to an API if it was
-  not engineered to be taken out from the beginning.
+   - **Manual configuration**: DOMJudge requires the user to manually configure a lot
+     of the infrastructure around the running part of the code, allowing you to use
+     your own compilers, interpreters, and change versions of the languages as you
+     wish. Problem with this is the user needs to be profficient with the OS and be
+     careful when configuring the runners, as it is quite easy to allow an execution
+     leak and spoil the results. This is also intertwined with the system, telling
+     it what compiler is available, and is not easy to port over to an API if it was
+     not engineered to be taken out from the beginning.
 
-- **Mix of programming languages**: As DOMJudge is written in PHP and C, the code
-  running component is also written in both languages, making it a maintenance
-  nightmare for this project.
+   - <span style="color:red">**Mix of programming languages**</span>: As DOMJudge is written in PHP and C, the code
+     running component is also written in both languages, making it a maintenance
+     nightmare for this project.
 
-- <span style="color:green">**Accurate runtime results**</span>: DOMJudge
-  provides the user with accurate resource usage information after every
-  submission.
+   - <span style="color:green">**Accurate runtime results**</span>: DOMJudge
+     provides the user with accurate resource usage information after every
+     submission.
 
 ## Conclusion
 
@@ -182,3 +188,9 @@ build a wide range of applications that need online code execution features.
 
 SaaS platform offering job-focused courses on algorithms in different languages.
 (n.d.). <https://www.codechef.com/>
+
+DOMjudge/domjudge: DOMjudge programming contest jury system. (n.d.). GitHub. <https://github.com/DOMjudge/domjudge/tree/main>
+
+(n.d.). DOMjudge. <https://www.domjudge.org/>
+
+NikolayIT/OpenJudgeSystem: An open source system for online algorithm competitions for Windows, written in ASP.NET MVC. (n.d.). GitHub. <https://github.com/NikolayIT/OpenJudgeSystem>

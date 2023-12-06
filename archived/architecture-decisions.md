@@ -63,4 +63,5 @@ Now, what is the current workflow:
 - When all tests have been ran, the results are saved in the database, and
   returned to the frontend.
 
-<img src="./diagram.svg" />
+<!-- <img src="./diagram.svg" /> -->
+![Basic flow of submit solution](./diagram.svg "Basic flow of submit solution")

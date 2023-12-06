@@ -12,7 +12,7 @@ func GetSubmissions(c echo.Context) error {
 	db := db.GetDb()
 	var submissions []exerpack.Submission
 
-	if db.Where(db.Where(" = ?", c.Get("username")).Where("id = ?", c.Param("exercise"))).Find(&submissions).RowsAffected > 0 {
+	if db.Where(db.Where("username = ?", c.Get("username")).Where("id = ?", c.Param("exercise"))).Find(&submissions).RowsAffected > 0 {
 		return c.JSON(http.StatusOK, submissions)
 	}
 	return c.JSON(http.StatusNotFound, "not found")

@@ -18,7 +18,6 @@ import (
 	exercise "yordanmitev.me/code-checker/exercise"
 	user "yordanmitev.me/code-checker/user"
 
-	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
@@ -30,7 +29,6 @@ func main() {
 
 	// init
 	godotenv.Load(".env")
-	uuid.EnableRandPool()
 	piston.Start()
 	auth.Init()
 	// jwtConfig := auth.GetJwtConfig()
@@ -78,8 +76,8 @@ func main() {
 	loggedInUsers.DELETE("", userapi.DeleteUser)
 
 	// submissions
-	submissions := api.Group("/users/:username/exercises/:exercise/submissions", scenarios.IsLoggedIn, scenarios.IsSelf)
-	submissions.GET("", solve.GetSubmissions)
+	submissions := loggedInUsers.Group("/exercises/:exercise", scenarios.IsLoggedIn, scenarios.IsSelf)
+	submissions.GET("/submissions", solve.GetSubmissions)
 	submissions.GET("/:solution", solve.GetSolution)
 	submissions.GET("/solutions", solve.GetSolutions)
 
